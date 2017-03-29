@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,20 +45,32 @@ public class DuplicateCall {
 
 			}).collect(Collectors.toList());
 
+			List<String> distinctList = shortList.stream().distinct().collect(Collectors.toList());
+
+			long count = 0;
+
+			for (String value : distinctList) {
+				if (Collections.frequency(shortList, value) > 1)
+					count++;
+			}
+
+			System.out.println(count);
+
 			Set<HelperCall> set = new HashSet<>();
 
 			for (String value : shortList) {
 				set.add(new HelperCall(value, Collections.frequency(shortList, value)));
 			}
 
-			long count = set.stream().filter(a -> a.getQuantity() > 1).count();
+			count = set.stream().filter(a -> a.getQuantity() > 1).count();
 
-			List<HelperCall> finalList = set.stream().filter(a -> a.getQuantity() > 1)
-					.sorted(Comparator.comparing(HelperCall::getQuantity)).collect(Collectors.toList());
-
-			for (HelperCall value : finalList)
-				System.out.println(value);
-
+			// List<HelperCall> finalList = set.stream().filter(a ->
+			// a.getQuantity() > 1)
+			// .sorted(Comparator.comparing(HelperCall::getQuantity)).collect(Collectors.toList());
+			//
+			//// for (HelperCall value : finalList)
+			//// System.out.println(value);
+			//
 			System.out.println("Duplicate calls: " + count);
 
 		}
